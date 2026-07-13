@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AcademIQ — Academic Integrity Agent</title>
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-main sticky-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <span class="brand-icon"><i class="bi bi-shield-check"></i></span>
+      <span class="brand-text">AcademIQ</span>
+      <span class="brand-badge">AI</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link nav-tab active" href="#" data-tab="chat"><i class="bi bi-chat-dots me-1"></i>Agent Chat</a></li>
+        <li class="nav-item"><a class="nav-link nav-tab" href="#" data-tab="analyze"><i class="bi bi-search me-1"></i>Analyze</a></li>
+        <li class="nav-item"><a class="nav-link nav-tab" href="#" data-tab="similarity"><i class="bi bi-files me-1"></i>Similarity</a></li>
+        <li class="nav-item"><a class="nav-link nav-tab" href="#" data-tab="profile"><i class="bi bi-person-lines-fill me-1"></i>Profile</a></li>
+        <li class="nav-item"><a class="nav-link nav-tab" href="#" data-tab="dashboard"><i class="bi bi-grid-3x3-gap me-1"></i>Dashboard</a></li>
+        <li class="nav-item ms-2">
+          <button class="btn btn-sm btn-outline-secondary" id="themeToggle" title="Toggle dark mode">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ HERO ══════════════════════════ -->
+<div class="hero-strip" id="heroStrip">
+  <div class="container-fluid px-4 py-4">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="hero-title mb-1">Academic Integrity &amp; Anomaly Detection</h1>
+        <p class="hero-sub mb-0">Powered by IBM Watsonx.ai &amp; Granite Models — ethical, evidence-based analysis for educators.</p>
+      </div>
+      <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <span class="status-pill" id="statusPill"><i class="bi bi-circle-fill pulse-dot"></i> Agent Online</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MAIN CONTENT ═══════════════════ -->
+<div class="container-fluid px-4 py-3" id="mainContent">
+
+  <!-- ─── TAB: CHAT ─── -->
+  <div class="tab-pane-custom active" id="tab-chat">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card card-main h-100 d-flex flex-column">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <span><i class="bi bi-chat-dots-fill me-2 text-accent"></i>Chat with AcademIQ</span>
+            <button class="btn btn-sm btn-ghost" id="clearChat" title="Clear chat"><i class="bi bi-trash3"></i></button>
+          </div>
+          <div class="card-body flex-grow-1 p-0">
+            <div id="chatMessages" class="chat-messages">
+              <div class="msg msg-agent">
+                <div class="msg-avatar"><i class="bi bi-shield-check"></i></div>
+                <div class="msg-bubble">
+                  <strong>AcademIQ</strong>
+                  <p class="mb-0 mt-1">Hello! I'm your Academic Integrity &amp; Anomaly Detection Specialist. I can help you analyse submissions, detect stylometric anomalies, assess AI-generation likelihood, and build student writing profiles.<br><br>Try asking me something like:<br>
+                  <em>"What are common signs of AI-generated academic text?"</em><br>
+                  <em>"How do I interpret a Type-Token Ratio for a student submission?"</em></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer chat-input-area">
+            <div class="input-group">
+              <textarea id="chatInput" class="form-control chat-textarea" rows="2" placeholder="Ask AcademIQ anything about academic integrity…"></textarea>
+              <button class="btn btn-accent" id="sendBtn" title="Send">
+                <i class="bi bi-send-fill"></i>
+              </button>
+            </div>
+            <div class="d-flex gap-2 mt-2 flex-wrap">
+              <button class="btn btn-xs btn-suggestion" data-msg="What stylometric features best indicate AI-generated text?">AI detection signals</button>
+              <button class="btn btn-xs btn-suggestion" data-msg="Explain Type-Token Ratio and what a low score means.">Type-Token Ratio</button>
+              <button class="btn btn-xs btn-suggestion" data-msg="How should I handle a flagged submission ethically?">Handling flagged work</button>
+              <button class="btn btn-xs btn-suggestion" data-msg="What is sentence length burstiness?">Burstiness explained</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-main mb-3">
+          <div class="card-header"><i class="bi bi-info-circle me-2 text-accent"></i>Agent Capabilities</div>
+          <div class="card-body">
+            <ul class="capability-list">
+              <li><i class="bi bi-check2-circle text-success"></i>Stylometric Analysis</li>
+              <li><i class="bi bi-check2-circle text-success"></i>AI-Generation Detection</li>
+              <li><i class="bi bi-check2-circle text-success"></i>Submission Similarity</li>
+              <li><i class="bi bi-check2-circle text-success"></i>Student Baseline Profiling</li>
+              <li><i class="bi bi-check2-circle text-success"></i>Structural Anomaly Flags</li>
+              <li><i class="bi bi-check2-circle text-success"></i>Educator Recommendations</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-shield-exclamation me-2 text-accent"></i>Ethical Guidelines</div>
+          <div class="card-body small text-muted">
+            <p class="mb-2">This tool provides <strong>probabilistic analysis</strong>, not definitive verdicts.</p>
+            <p class="mb-2">All flagged submissions require <strong>human review</strong> before any action.</p>
+            <p class="mb-0">Anomalies may have <strong>innocent explanations</strong> — approach with care.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TAB: ANALYZE ─── -->
+  <div class="tab-pane-custom" id="tab-analyze">
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-file-text me-2 text-accent"></i>Submission Analysis</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Student Name</label>
+              <input type="text" id="ana-student" class="form-control" placeholder="e.g. Jane Smith" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Assignment Name</label>
+              <input type="text" id="ana-assignment" class="form-control" placeholder="e.g. Essay 3 — Climate Change" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Submission Text <span class="text-muted">(paste full text)</span></label>
+              <textarea id="ana-text" class="form-control mono-text" rows="10" placeholder="Paste the student's submission here…"></textarea>
+              <div class="form-text" id="ana-wordcount">0 words</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Baseline Text <span class="text-muted">(optional — prior verified work)</span></label>
+              <textarea id="ana-baseline" class="form-control mono-text" rows="4" placeholder="Paste a previous verified submission to compare writing style…"></textarea>
+            </div>
+            <button class="btn btn-accent w-100" id="analyzeBtn">
+              <i class="bi bi-search me-2"></i>Run Analysis
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div id="analysisResults" class="d-none">
+          <!-- Risk Badge -->
+          <div class="card card-main mb-3">
+            <div class="card-body text-center py-4">
+              <div id="riskBadge" class="risk-badge-large mb-2">—</div>
+              <div class="text-muted small" id="riskLabel">AI-Generation Risk Level</div>
+              <div class="mt-3">
+                <div class="progress risk-progress">
+                  <div class="progress-bar" id="aiRiskBar" role="progressbar" style="width:0%"></div>
+                </div>
+                <div class="small text-muted mt-1" id="aiRiskScore">Score: —</div>
+              </div>
+            </div>
+          </div>
+          <!-- Feature Grid -->
+          <div class="card card-main mb-3">
+            <div class="card-header"><i class="bi bi-bar-chart me-2 text-accent"></i>Stylometric Features</div>
+            <div class="card-body p-0">
+              <div id="featureGrid" class="feature-grid"></div>
+            </div>
+          </div>
+          <!-- AI Signals -->
+          <div class="card card-main mb-3">
+            <div class="card-header"><i class="bi bi-robot me-2 text-accent"></i>AI-Generation Signals</div>
+            <div class="card-body p-0">
+              <div id="aiSignalGrid" class="feature-grid"></div>
+            </div>
+          </div>
+          <!-- AI Analysis Narrative -->
+          <div class="card card-main">
+            <div class="card-header"><i class="bi bi-stars me-2 text-accent"></i>Agent Analysis</div>
+            <div class="card-body">
+              <div id="aiAnalysisText" class="markdown-content"></div>
+            </div>
+          </div>
+        </div>
+        <div id="analysisPlaceholder" class="card card-main">
+          <div class="card-body text-center py-5 text-muted">
+            <i class="bi bi-search display-4 mb-3 d-block opacity-25"></i>
+            <p>Results will appear here after running analysis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TAB: SIMILARITY ─── -->
+  <div class="tab-pane-custom" id="tab-similarity">
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-files me-2 text-accent"></i>Submission A</div>
+          <div class="card-body">
+            <input type="text" id="sim-label-a" class="form-control mb-2" placeholder="Label (e.g. Student A — Essay 2)" />
+            <textarea id="sim-text-a" class="form-control mono-text" rows="12" placeholder="Paste first submission…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-files me-2 text-accent"></i>Submission B</div>
+          <div class="card-body">
+            <input type="text" id="sim-label-b" class="form-control mb-2" placeholder="Label (e.g. Student B — Essay 2)" />
+            <textarea id="sim-text-b" class="form-control mono-text" rows="12" placeholder="Paste second submission…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-accent" id="similarityBtn"><i class="bi bi-shuffle me-2"></i>Compare Submissions</button>
+      </div>
+      <div class="col-12" id="simResults" style="display:none">
+        <div class="card card-main">
+          <div class="card-body">
+            <div class="row align-items-center mb-4">
+              <div class="col-md-3 text-center">
+                <div class="sim-score-circle" id="simScoreCircle">
+                  <span id="simScoreNum">—</span>
+                </div>
+                <div class="text-muted small mt-2">Similarity Score</div>
+              </div>
+              <div class="col-md-9">
+                <div class="mb-2"><strong>Risk Level:</strong> <span id="simRiskBadge" class="badge badge-risk">—</span></div>
+                <div class="progress" style="height:12px">
+                  <div class="progress-bar" id="simBar" role="progressbar" style="width:0%"></div>
+                </div>
+                <div class="small text-muted mt-1">0 = no overlap · 1.0 = identical</div>
+              </div>
+            </div>
+            <div id="simAssessment" class="markdown-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TAB: PROFILE ─── -->
+  <div class="tab-pane-custom" id="tab-profile">
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-person-badge me-2 text-accent"></i>Student Profile Builder</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Student Name</label>
+              <input type="text" id="prof-name" class="form-control" placeholder="e.g. Alex Johnson" />
+            </div>
+            <div id="submissionInputs">
+              <label class="form-label fw-semibold">Prior Verified Submissions</label>
+              <div class="mb-2">
+                <textarea class="form-control mono-text prof-submission" rows="5" placeholder="Submission 1 — paste verified text…"></textarea>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary mb-3" id="addSubmissionBtn">
+              <i class="bi bi-plus-circle me-1"></i>Add Another Submission
+            </button>
+            <button class="btn btn-accent w-100" id="profileBtn">
+              <i class="bi bi-person-check me-2"></i>Build Profile
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div id="profileResults" style="display:none">
+          <div class="card card-main mb-3">
+            <div class="card-header"><i class="bi bi-graph-up me-2 text-accent"></i>Baseline Metrics</div>
+            <div class="card-body p-0">
+              <div id="baselineGrid" class="feature-grid"></div>
+            </div>
+          </div>
+          <div class="card card-main">
+            <div class="card-header"><i class="bi bi-stars me-2 text-accent"></i>AI-Generated Profile</div>
+            <div class="card-body">
+              <div id="profileText" class="markdown-content"></div>
+            </div>
+          </div>
+        </div>
+        <div id="profilePlaceholder" class="card card-main">
+          <div class="card-body text-center py-5 text-muted">
+            <i class="bi bi-person-lines-fill display-4 mb-3 d-block opacity-25"></i>
+            <p>Build a writing profile to establish baselines and anomaly thresholds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TAB: DASHBOARD ─── -->
+  <div class="tab-pane-custom" id="tab-dashboard">
+    <div class="row g-3 mb-3">
+      <div class="col-6 col-md-3">
+        <div class="card card-stat">
+          <div class="stat-icon text-accent"><i class="bi bi-file-earmark-text"></i></div>
+          <div class="stat-num" id="stat-analysed">0</div>
+          <div class="stat-label">Analysed</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card card-stat">
+          <div class="stat-icon text-warning"><i class="bi bi-exclamation-triangle"></i></div>
+          <div class="stat-num" id="stat-flagged">0</div>
+          <div class="stat-label">Flagged</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card card-stat">
+          <div class="stat-icon text-success"><i class="bi bi-check-circle"></i></div>
+          <div class="stat-num" id="stat-clear">0</div>
+          <div class="stat-label">Clear</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card card-stat">
+          <div class="stat-icon text-info"><i class="bi bi-people"></i></div>
+          <div class="stat-num" id="stat-profiles">0</div>
+          <div class="stat-label">Profiles</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-clock-history me-2 text-accent"></i>Recent Analysis Log</div>
+          <div class="card-body p-0">
+            <div id="analysisLog" class="analysis-log">
+              <div class="log-empty text-muted text-center py-4">
+                <i class="bi bi-inbox display-5 d-block opacity-25 mb-2"></i>
+                No analyses yet — run a submission analysis to populate this log.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card card-main mb-3">
+          <div class="card-header"><i class="bi bi-pie-chart me-2 text-accent"></i>Risk Distribution</div>
+          <div class="card-body">
+            <div id="riskChart" class="risk-chart-container">
+              <svg viewBox="0 0 200 120" class="risk-svg" id="riskSvg">
+                <text x="100" y="70" text-anchor="middle" class="chart-placeholder-text">No data yet</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="card card-main">
+          <div class="card-header"><i class="bi bi-gear me-2 text-accent"></i>System Status</div>
+          <div class="card-body small" id="systemStatus">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Agent</span><span class="badge bg-success">Online</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Model</span><span class="text-muted" id="ss-model">—</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>NLTK</span><span id="ss-nltk">—</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>sklearn</span><span id="ss-sklearn">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ══════════════════ LOADING OVERLAY ══════════════════ -->
+<div id="loadingOverlay" class="loading-overlay d-none">
+  <div class="loading-card">
+    <div class="spinner-grow text-accent mb-3" role="status"></div>
+    <div class="fw-semibold" id="loadingMsg">Analysing…</div>
+    <div class="text-muted small mt-1">IBM Watsonx.ai · Granite Model</div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- App JS -->
+<script src="/static/js/app.js"></script>
+</body>
+</html>
