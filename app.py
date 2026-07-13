@@ -117,7 +117,7 @@ def get_watsonx_model():
     # Standard IBM Cloud (IAM) authentication — apikey only, no username/version
     credentials = {
         "url": os.getenv("WATSONX_URL", "https://au-syd.ml.cloud.ibm.com"),
-        "apikey": os.getenv("IBM_API_KEY", "LneTtNeb1hWfBfwcX8VXjWuOI2LETauGGGH-5wukysmC"),
+        "apikey": os.getenv("IBM_API_KEY", ),
     }
     
     params = {
