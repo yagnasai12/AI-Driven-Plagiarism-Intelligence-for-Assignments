@@ -117,7 +117,7 @@ def get_watsonx_model():
     # Standard IBM Cloud (IAM) authentication — apikey only, no username/version
     credentials = {
         "url": os.getenv("WATSONX_URL", "https://au-syd.ml.cloud.ibm.com"),
-        "apikey": os.getenv("IBM_API_KEY", ),
+        "apikey": os.getenv("IBM_API_KEY" ),
     }
     
     params = {
@@ -131,7 +131,7 @@ def get_watsonx_model():
     return ModelInference(
         model_id=os.getenv("GRANITE_MODEL_ID", "meta-llama/llama-3-3-70b-instruct"),
         credentials=credentials,
-        project_id=os.getenv("WATSONX_PROJECT_ID", "8289e4f8-9138-44ea-9864-e260414cc1a4"),
+        project_id=os.getenv("WATSONX_PROJECT_ID"),
         params=params,
     )
 # ══════════════════════════════════════════════════════════════════════════════
